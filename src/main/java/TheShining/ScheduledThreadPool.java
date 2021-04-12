@@ -12,7 +12,7 @@ public class ScheduledThreadPool implements IScheduledThreadPool {
     private Boolean isOff = false;
 
     public ScheduledThreadPool(int poolCapacity) {
-        for(int i = 0; i < poolCapacity; i++) {
+        for (int i = 0; i < poolCapacity; i++) {
             ThreadPoolRunnable threadPoolRunnable = new ThreadPoolRunnable(taskQueue);
             threadPoolRunnables.add(threadPoolRunnable);
             new Thread(threadPoolRunnable).start();
@@ -20,7 +20,7 @@ public class ScheduledThreadPool implements IScheduledThreadPool {
     }
 
     public synchronized void submit(Runnable runnable, long delay) {
-        if(isOff)
+        if (isOff)
             throw new IllegalStateException("Thread pool is off");
         taskQueue.offer(new DelayedTask(runnable, delay));
     }
@@ -28,14 +28,14 @@ public class ScheduledThreadPool implements IScheduledThreadPool {
     @Override
     public synchronized void off() {
         isOff = true;
-        for(ThreadPoolRunnable threadPoolRunnable : threadPoolRunnables) {
+        for (ThreadPoolRunnable threadPoolRunnable : threadPoolRunnables) {
             threadPoolRunnable.off();
         }
     }
 
     @Override
     public synchronized void waitUntilAllTasksFinished() {
-        while(this.taskQueue.size() > 0 || threadPoolRunnables.stream().anyMatch(x -> !x.isIdle())) {
+        while (this.taskQueue.size() > 0 || threadPoolRunnables.stream().anyMatch(x -> !x.isIdle())) {
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e) {

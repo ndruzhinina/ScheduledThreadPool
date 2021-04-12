@@ -23,10 +23,11 @@ public class ScheduledThreadPoolTests {
             b.set(true);
         }, 50);
 
-        while(b.get() == false) {
+        while (b.get() == false) {
             try {
                 Thread.sleep(1);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
 
         assertTrue(ChronoUnit.MILLIS.between(start, end.get()) > 50);

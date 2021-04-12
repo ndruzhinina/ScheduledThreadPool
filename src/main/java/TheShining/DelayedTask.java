@@ -25,10 +25,10 @@ public class DelayedTask implements Delayed {
 
     @Override
     public int compareTo(Delayed obj) {
-        if (timeToRun < ((DelayedTask)obj).timeToRun) {
+        if (timeToRun < ((DelayedTask) obj).timeToRun) {
             return -1;
         }
-        if (timeToRun > ((DelayedTask)obj).timeToRun) {
+        if (timeToRun > ((DelayedTask) obj).timeToRun) {
             return 1;
         }
         return 0;

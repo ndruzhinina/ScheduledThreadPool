@@ -25,25 +25,39 @@ public class SoundProvider {
     private static SoundProvider instance;
 
     public static SoundProvider getInstance() {
-        if(instance == null) instance = new SoundProvider();
+        if (instance == null) instance = new SoundProvider();
         return instance;
     }
 
-    public void playSound(String type){
+    public void playSound(String type) {
         Clip clipToPlay;
-        switch (type){
-            case "symbol1": clipToPlay = clip0; break;
-            case "symbol2": clipToPlay = clip1; break;
-            case "symbol3": clipToPlay = clip2; break;
-            case "return": clipToPlay = clipReturn; break;
-            case "returnbell": clipToPlay = clipReturnBell; break;
-            case "space": clipToPlay = clipSpace; break;
-            case "horror": clipToPlay = clipHorror; break;
-            default: clipToPlay = clip0;
+        switch (type) {
+            case "symbol1":
+                clipToPlay = clip0;
+                break;
+            case "symbol2":
+                clipToPlay = clip1;
+                break;
+            case "symbol3":
+                clipToPlay = clip2;
+                break;
+            case "return":
+                clipToPlay = clipReturn;
+                break;
+            case "returnbell":
+                clipToPlay = clipReturnBell;
+                break;
+            case "space":
+                clipToPlay = clipSpace;
+                break;
+            case "horror":
+                clipToPlay = clipHorror;
+                break;
+            default:
+                clipToPlay = clip0;
         }
 
-        if(clipToPlay !=  null) {
-            //clipToPlay.stop();
+        if (clipToPlay != null) {
             previousClip = clipToPlay;
             clipToPlay.setFramePosition(0);
             clipToPlay.start();
@@ -53,28 +67,29 @@ public class SoundProvider {
     private static Clip getClip(String filePath) {
         try {
             File file = new File(filePath);
-            try(AudioInputStream audioStream = AudioSystem.getAudioInputStream(file)) {
+            try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(file)) {
                 DataLine.Info info = new DataLine.Info(Clip.class, audioStream.getFormat());
                 Clip clip = (Clip) AudioSystem.getLine(info);
                 clip.open(audioStream);
                 return clip;
             }
-        } catch (Exception ex) { return null; }
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     @Override
     public void finalize() {
         closeAllClips();
-        System.out.printf("Finalizing");
     }
 
     private void closeAllClips() {
-        if(clip0 != null) clip0.close();
-        if(clip1 != null) clip1.close();
-        if(clip2 != null) clip2.close();
-        if(clipReturn != null) clipReturn.close();
-        if(clipReturnBell != null) clipReturnBell.close();
-        if(clipSpace != null) clipSpace.close();
-        if(clipHorror != null) clipHorror.close();
+        if (clip0 != null) clip0.close();
+        if (clip1 != null) clip1.close();
+        if (clip2 != null) clip2.close();
+        if (clipReturn != null) clipReturn.close();
+        if (clipReturnBell != null) clipReturnBell.close();
+        if (clipSpace != null) clipSpace.close();
+        if (clipHorror != null) clipHorror.close();
     }
 }

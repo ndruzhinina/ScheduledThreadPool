@@ -5,7 +5,7 @@ import java.util.concurrent.BlockingQueue;
 public class ThreadPoolRunnable implements Runnable {
 
     private Thread thread = null;
-    private BlockingQueue<Runnable> taskQueue = null;
+    private BlockingQueue<Runnable> taskQueue;
     private Boolean isOff = false;
     private boolean idle;
 
@@ -14,18 +14,18 @@ public class ThreadPoolRunnable implements Runnable {
     }
 
     @Override
-    public void run()  {
+    public void run() {
         thread = Thread.currentThread();
 
         idle = true;
-        while(!isOff) {
+        while (!isOff) {
             try {
                 synchronized (this) {
                     idle = false;
                 }
 
-                DelayedTask task = (DelayedTask)taskQueue.poll();
-                if(task != null)
+                DelayedTask task = (DelayedTask) taskQueue.poll();
+                if (task != null)
                     task.getRunnable().run();
 
                 synchronized (this) {
@@ -44,11 +44,7 @@ public class ThreadPoolRunnable implements Runnable {
 
     public void off() {
         isOff = true;
-        if(this.thread != null)
+        if (this.thread != null)
             thread.interrupt();
-    }
-
-    public Boolean isOff() {
-        return isOff;
     }
 }
